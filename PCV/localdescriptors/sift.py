@@ -5,7 +5,7 @@ import os
 
 
 def process_image(imagename,resultname,params="--edge-thresh 10 --peak-thresh 5"):
-    """ Process an image and save the results in a file. """
+    """ Process an image and save the results in a file.处理图像并将结果保存到文件中。 """
 
     if imagename[-3:] != 'pgm':
         # create a pgm file
@@ -20,10 +20,10 @@ def process_image(imagename,resultname,params="--edge-thresh 10 --peak-thresh 5"
 
 
 def read_features_from_file(filename):
-    """ Read feature properties and return in matrix form. """
+    """ Read feature properties and return in matrix form. 读取特征属性并以矩阵形式返回"""
     
     f = loadtxt(filename)
-    return f[:,:4],f[:,4:] # feature locations, descriptors
+    return f[:,:4],f[:,4:] # feature locations, descriptors要素位置，描述符
 
 
 def write_features_to_file(filename,locs,desc):
@@ -55,6 +55,8 @@ def match(desc1,desc2):
         select its match in the second image.
         input: desc1 (descriptors for the first image), 
         desc2 (same for second image). """
+    '''对于第一个图像中的每个描述符，在第二个图像中选择其匹配项。
+    输入：desc1（第一个图像的描述符），desc2（第二幅图像相同）。'''
     
     desc1 = array([d/linalg.norm(d) for d in desc1])
     desc2 = array([d/linalg.norm(d) for d in desc2])
@@ -63,14 +65,15 @@ def match(desc1,desc2):
     desc1_size = desc1.shape
     
     matchscores = zeros((desc1_size[0]),'int')
-    desc2t = desc2.T # precompute matrix transpose
+    desc2t = desc2.T # precompute matrix transpose预计算矩阵转置
     for i in range(desc1_size[0]):
-        dotprods = dot(desc1[i,:],desc2t) # vector of dot products
+        dotprods = dot(desc1[i,:],desc2t) # vector of dot products点积向量
         dotprods = 0.9999*dotprods
-        # inverse cosine and sort, return index for features in second image
+        # inverse cosine and sort, return index for features in second image第二幅图像中特征的反余弦和排序、返回索引
         indx = argsort(arccos(dotprods))
         
         # check if nearest neighbor has angle less than dist_ratio times 2nd
+        # 检查最近的邻居的角度是否小于dist_ratio乘以2
         if arccos(dotprods)[indx[0]] < dist_ratio * arccos(dotprods)[indx[1]]:
             matchscores[i] = int(indx[0])
     
@@ -97,6 +100,10 @@ def plot_matches(im1,im2,locs1,locs2,matchscores,show_below=True):
     """ Show a figure with lines joining the accepted matches
         input: im1,im2 (images as arrays), locs1,locs2 (location of features), 
         matchscores (as output from 'match'), show_below (if images should be shown below). """
+    '''显示带有连接已接受匹配项的线条的图形,
+        输入：im1、im2（图像作为数组）、locs1、locs2（特征位置），
+        matchscores（作为“match”的输出），show_below（如果下面应该显示图像）
+    '''
     
     im3 = appendimages(im1,im2)
     if show_below:

@@ -102,6 +102,10 @@ def panorama(H,fromim,toim,padding=2400,delta=2400):
         using a homography H (preferably estimated using RANSAC).
         The result is an image with the same height as toim. 'padding' 
         specifies number of fill pixels and 'delta' additional translation. """ 
+    '''
+        通过混合两幅图像创建水平全景,使用单应性H（最好使用RANSAC估计）。
+        结果是一个与toim高度相同的图像。'填充'指定填充像素数和“增量”附加转换。
+    '''
     
     # check if images are grayscale or color
     is_color = len(fromim.shape) == 3
