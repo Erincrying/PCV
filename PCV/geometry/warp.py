@@ -106,6 +106,11 @@ def panorama(H,fromim,toim,padding=2400,delta=2400):
         通过混合两幅图像创建水平全景,使用单应性H（最好使用RANSAC估计）。
         结果是一个与toim高度相同的图像。'填充'指定填充像素数和“增量”附加转换。
     '''
+    '''
+        transf()函数通过将像素和H相乘，然后对齐次坐标进行归一化来实现像素间的映射。
+        通过查看H中的平移量，判断该图像填补到左边还是右边。
+        当该图像填充到左边时，由于目标图像中心点的坐标也变化了，所以在左边的情况中，需要在单应性矩阵中加入平移。
+    '''
     
     # check if images are grayscale or color
     is_color = len(fromim.shape) == 3
